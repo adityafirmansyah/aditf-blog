@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang='en' class=''>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name="robots" content="noindex">
+    <title>ExitPopup</title>
+
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/animate.css@3.6.1/animate.min.css'>
+    <style class="cp-pen-styles">
+        body {
+            font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2'></script>
+    <script src='https://cdn.jsdelivr.net/npm/promise-polyfill'></script>
+    <script>
+    function addEvent(obj, evt, fn) {
+        if (obj.addEventListener) {
+            obj.addEventListener(evt, fn, false);
+        }
+        else if (obj.attachEvent) {
+            obj.attachEvent("on" + evt, fn);
+        }
+    }
+    addEvent(window,"load",function(e) {
+        addEvent(document, "mouseout", function(e) {
+            e = e ? e : window.event;
+            var from = e.relatedTarget || e.toElement;
+            if (!from || from.nodeName == "HTML") {
+                Swal({
+                    title: 'Surprise..!!',
+                    animation: false,
+                    customClass: 'animated tada'
+                });
+            }
+        });
+    });
+    </script>
+</body>
+
+</html>
