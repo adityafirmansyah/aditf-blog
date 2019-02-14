@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Remove Query Strings From Static Resources | AditF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="I believe you come here after scanning your wordpress blog with awesome tools from gtmetrix.com, but if it’s not, let’s just assume it’s right, ehe.. ok so, after you scan your wordpress blog you got">
+<meta name="keywords" content="wordpress">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Remove Query Strings From Static Resources">
+<meta property="og:url" content="http://aditf.com/blog/remove-query-strings-from-static-resources/index.html">
+<meta property="og:site_name" content="AditF">
+<meta property="og:description" content="I believe you come here after scanning your wordpress blog with awesome tools from gtmetrix.com, but if it’s not, let’s just assume it’s right, ehe.. ok so, after you scan your wordpress blog you got">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-02-14T02:21:36.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Remove Query Strings From Static Resources">
+<meta name="twitter:description" content="I believe you come here after scanning your wordpress blog with awesome tools from gtmetrix.com, but if it’s not, let’s just assume it’s right, ehe.. ok so, after you scan your wordpress blog you got">
+  
+    <link rel="alternate" href="/atom.xml" title="AditF" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Gentium+Book+Basic:300,400,700|Lato:300,400">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/about-me">About Me</a>
+        
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://aditf.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-remove-query-strings-from-static-resources" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/remove-query-strings-from-static-resources/" class="article-date">
+  <time datetime="2014-08-20T14:20:59.000Z" itemprop="datePublished">August 20, 2014</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Remove Query Strings From Static Resources
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>I believe you come here after scanning your wordpress blog with awesome tools from gtmetrix.com, but if it’s not, let’s just assume it’s right, ehe.. ok so, after you scan your wordpress blog you got notification from gtmetrix that you need to remove query strings from static resources easy to say but hey.. wordpress generated those css and javascript inside wp_head() function, its not as easy as change html source code. Then how to do that..?</p>
+<p>Many folks out there suggest to use minify plugin like w3c total cache that generate minify version of javascript and css, but what if your hosting cant handle that feature..? I’ve been working with many clients with bunches of javascript and css inside their wordpress that causing 500 Server Error when using minify plugin, if that happen use free service like Cloudflare will help to do minify job. Hey Adit! just tell me how to remove those annoying query strings. Huft, okay then..</p>
+<p>There are two methods to remove query strings from wordpress:</p>
+<p><strong>1. Use plugin “Remove Query Strings From Static Resources”</strong></p>
+<p>Do I need to explain this..? ok, you just need to install “Remove Query Strings From Static Resources” to your wordpress blog then activate it. That is simple, isn’t it?</p>
+<p><strong>2. Adding custom function inside functions.php inside your theme</strong></p>
+<p>Ok fellow, if you chose to use this method, you are really my friend. :)<br>This function is actually same as that plugin, but I know you will use this method my friend. ok no need much further delay, here is the code:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">remove_query_strings</span><span class="params">( $src )</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( strpos( $src, <span class="string">'ver='</span> ) ) $src = remove_query_arg( <span class="string">'ver'</span>, $src );</span><br><span class="line">    <span class="keyword">return</span> $src;</span><br><span class="line">&#125;</span><br><span class="line">add_filter( <span class="string">'script_loader_src'</span>, <span class="string">'remove_query_strings'</span>, <span class="number">15</span>, <span class="number">1</span> );</span><br><span class="line">add_filter( <span class="string">'style_loader_src'</span>, <span class="string">'remove_query_strings'</span>, <span class="number">15</span>, <span class="number">1</span> );</span><br></pre></td></tr></table></figure>
+<p>I know you do not need me to tell you how to insert this code inside functions.php so I’ll explain what the actually code do.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">remove_query_strings</span><span class="params">( $src )</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( strpos( $src, <span class="string">'ver='</span> ) ) $src = remove_query_arg( <span class="string">'ver'</span>, $src );</span><br><span class="line">    <span class="keyword">return</span> $src;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This code will find query string <strong><em>“ver=”</em></strong> then passed to <strong><em>remove_query_arg()</em></strong> function to remove it from <strong><em>$src</em></strong> variable then return it.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add_filter( <span class="string">'script_loader_src'</span>, <span class="string">'remove_query_strings'</span>, <span class="number">15</span>, <span class="number">1</span> );</span><br><span class="line">add_filter( <span class="string">'style_loader_src'</span>, <span class="string">'remove_query_strings'</span>, <span class="number">15</span>, <span class="number">1</span> );</span><br></pre></td></tr></table></figure>
+<p>This code is adding filter to return the javascript and jss location without query strings. for further information about each of those function you can find it here:</p>
+<p>- <a href="https://id1.php.net/strpos" target="_blank" rel="noopener">https://id1.php.net/strpos</a><br>- <a href="https://codex.wordpress.org/Function_Reference/remove_query_arg" target="_blank" rel="noopener">https://codex.wordpress.org/Function_Reference/remove_query_arg</a><br>- <a href="https://codex.wordpress.org/Function_Reference/add_filter" target="_blank" rel="noopener">https://codex.wordpress.org/Function_Reference/add_filter</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://aditf.com/blog/remove-query-strings-from-static-resources/" data-id="cjs415qt40001xnfqpsciofjr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wordpress/">wordpress</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+</section>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Aditya Firmansyah
+      | Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/about-me" class="mobile-nav-link">About Me</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
